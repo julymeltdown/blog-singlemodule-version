@@ -49,7 +49,6 @@ class CommentController(
         val commentRequestDto = CommentRequestDto(
             articleId = articleId,
             email = userDetails.username,
-            password = request.password,
             content = request.content,
         )
         val comment = commentService.createComment(commentRequestDto)
@@ -72,7 +71,6 @@ class CommentController(
         val commentRequestDto = CommentRequestDto(
             articleId = articleId,
             email = userDetails.username,
-            password = request.password,
             content = request.content,
         )
         val comment = commentService.updateComment(commentId, commentRequestDto)
@@ -95,7 +93,6 @@ class CommentController(
         val deleteCommentDto = DeleteCommentDto(
             articleId = articleId,
             email = userDetails.username,
-            password = request.password,
             commentId = commentId
         )
         commentService.deleteComment(deleteCommentDto)
