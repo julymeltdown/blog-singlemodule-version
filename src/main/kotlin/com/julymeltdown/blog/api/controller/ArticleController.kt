@@ -6,7 +6,9 @@ import com.julymeltdown.blog.api.response.ArticleResponse
 import com.julymeltdown.blog.application.dto.post.ArticleRequestDto
 import com.julymeltdown.blog.application.dto.post.DeleteArticleDto
 import com.julymeltdown.blog.application.service.post.ArticleService
+import com.julymeltdown.blog.infrastructure.security.UserPrincipal
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
@@ -48,11 +50,11 @@ class ArticleController(
     }
     @PostMapping("/api/articles")
     fun createArticle(
-        @Valid @RequestBody articleRequest: ArticleRequest
+        @Valid @RequestBody articleRequest: ArticleRequest,
+        @AuthenticationPrincipal userDetails: UserPrincipal
     ): ResponseEntity<ArticleResponse> {
         val articleRequestDto = ArticleRequestDto(
-            email = articleRequest.email,
-            password = articleRequest.password,
+            email = userDetails.username,
             title = articleRequest.title,
             content = articleRequest.content
         )
@@ -74,7 +76,6 @@ class ArticleController(
     ): ResponseEntity<ArticleResponse> {
         val updateArticleRequestDto = ArticleRequestDto(
             email = articleRequest.email,
-            password = articleRequest.password,
             title = articleRequest.title,
             content = articleRequest.content
         )

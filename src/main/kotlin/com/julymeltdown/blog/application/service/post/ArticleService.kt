@@ -19,7 +19,7 @@ class ArticleService(
 ) {
     @Transactional
     fun createArticle(requestDto: ArticleRequestDto): ArticleResponseDto {
-        val user = userService.getValidUser(requestDto.email, requestDto.password)
+        val user = userService.getValidUserByEmail(requestDto.email)
         val article = Article(
             title = requestDto.title,
             content = requestDto.content,
@@ -77,10 +77,10 @@ class ArticleService(
 
     @Transactional
     fun updateArticle(articleId: Long, requestDto: ArticleRequestDto): ArticleResponseDto {
-        val requestUser = userService.getValidUser(requestDto.email, requestDto.password)
+        val user = userService.getValidUserByEmail(requestDto.email)
         val foundArticle = findValidArticleByArticleId(articleId)
         foundArticle.let {
-            if (it.user.email != requestUser.email) {
+            if (it.user.email != user.email) {
                 throw NotArticleOwnerException()
             }
             it.updateTitleAndContent(requestDto.title, requestDto.content)
