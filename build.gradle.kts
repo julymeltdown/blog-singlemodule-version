@@ -33,7 +33,7 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("com.querydsl:querydsl-jpa")
-	runtimeOnly("com.h2database:h2")
+	implementation("org.postgresql:postgresql")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	testImplementation("org.springframework.security:spring-security-test")
 

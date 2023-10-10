@@ -1,0 +1,15 @@
+version: '3.6'
+services:
+  db:
+    container_name: blog_db
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_PASSWORD: testpassword1
+      POSTGRES_USER: blog
+      POSTGRES_DB: blog
+      TZ: "Asia/Seoul"
+    volumes:
+      - ./postgres/initdb:/docker-entrypoint-initdb.d
+    tty: true
+    ports:
+      - "5434:5432"
