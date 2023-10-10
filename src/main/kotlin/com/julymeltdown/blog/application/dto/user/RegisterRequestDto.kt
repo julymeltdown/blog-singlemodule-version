@@ -1,4 +1,4 @@
-package com.julymeltdown.blog.application.dto.post
+package com.julymeltdown.blog.application.dto.user
 
 data class RegisterRequestDto(
     val email: String,
