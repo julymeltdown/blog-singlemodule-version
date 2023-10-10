@@ -6,7 +6,9 @@ import com.julymeltdown.blog.api.response.CommentResponse
 import com.julymeltdown.blog.application.dto.post.CommentRequestDto
 import com.julymeltdown.blog.application.dto.post.DeleteCommentDto
 import com.julymeltdown.blog.application.service.post.CommentService
+import com.julymeltdown.blog.infrastructure.security.UserPrincipal
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -41,12 +43,12 @@ class CommentController(
     @PostMapping("/api/articles/{articleId}/comments")
     fun createComment(
         @PathVariable articleId: Long,
-        @Valid @RequestBody request: CommentRequest
+        @Valid @RequestBody request: CommentRequest,
+        @AuthenticationPrincipal userDetails: UserPrincipal
     ): ResponseEntity<CommentResponse> {
         val commentRequestDto = CommentRequestDto(
             articleId = articleId,
-            email = request.email,
-            password = request.password,
+            email = userDetails.username,
             content = request.content,
         )
         val comment = commentService.createComment(commentRequestDto)
@@ -63,12 +65,12 @@ class CommentController(
     fun updateComment(
         @PathVariable articleId: Long,
         @PathVariable commentId: Long,
-        @Valid @RequestBody request: CommentRequest
+        @Valid @RequestBody request: CommentRequest,
+        @AuthenticationPrincipal userDetails: UserPrincipal
     ): ResponseEntity<CommentResponse> {
         val commentRequestDto = CommentRequestDto(
             articleId = articleId,
-            email = request.email,
-            password = request.password,
+            email = userDetails.username,
             content = request.content,
         )
         val comment = commentService.updateComment(commentId, commentRequestDto)
@@ -85,12 +87,12 @@ class CommentController(
     fun deleteComment(
         @PathVariable articleId: Long,
         @PathVariable commentId: Long,
-        @Valid @RequestBody request: DeleteCommentRequest
+        @Valid @RequestBody request: DeleteCommentRequest,
+        @AuthenticationPrincipal userDetails: UserPrincipal
     ): ResponseEntity<CommentResponse> {
         val deleteCommentDto = DeleteCommentDto(
             articleId = articleId,
-            email = request.email,
-            password = request.password,
+            email = userDetails.username,
             commentId = commentId
         )
         commentService.deleteComment(deleteCommentDto)

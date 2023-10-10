@@ -70,7 +70,9 @@ class UserService(
             }
         } ?: throw UserNotFoundException()
     }
-
+    fun getValidUserByEmail(email: String): User {
+        return userRepository.findByEmail(email) ?: throw UserNotFoundException()
+    }
     fun getValidUser(userId: Long): User {
         return userRepository.findById(userId).orElseThrow { UserNotFoundException() }
     }
