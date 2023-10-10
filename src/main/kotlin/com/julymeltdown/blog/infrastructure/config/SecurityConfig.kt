@@ -2,6 +2,7 @@ package com.julymeltdown.blog.infrastructure.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.julymeltdown.blog.infrastructure.security.JwtAuthenticationFilter
+import com.julymeltdown.blog.infrastructure.security.JwtTokenProvider
 import javax.servlet.http.HttpServletResponse
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -20,6 +21,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 @EnableMethodSecurity(prePostEnabled = true)
 class SecurityConfig(
     private val objectMapper: ObjectMapper,
+    private val jwtTokenProvider: JwtTokenProvider
 ) {
 
     @Bean

@@ -1,6 +1,7 @@
 package com.julymeltdown.blog.infrastructure.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.julymeltdown.blog.application.dto.common.ErrorDto
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.MalformedJwtException
 import io.jsonwebtoken.io.DecodingException

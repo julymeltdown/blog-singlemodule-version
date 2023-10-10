@@ -1,14 +1,8 @@
 package com.julymeltdown.blog.domain.model.posting.entity
 
 import com.julymeltdown.blog.domain.model.common.entity.BaseTimeEntity
-import javax.persistence.CascadeType
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.OneToMany
-import javax.persistence.Table
+import com.julymeltdown.blog.domain.model.posting.enums.Role
+import javax.persistence.*
 
 @Entity
 @Table(name = "users")
@@ -27,9 +21,17 @@ class User(
     val username: String,
 
     @field:Column(name = "refresh_token")
-    val refreshToken: String
+    var refreshToken: String? = null,
+
+    @field:Column(name = "role", nullable = false)
+    @field:Enumerated(EnumType.STRING)
+    val role: Role = Role.USER
 
 ) : BaseTimeEntity() {
+    fun updateRefreshToken(refreshToken: String) {
+        this.refreshToken = refreshToken
+    }
+
     // 고아 객체(articles, comments) 삭제용
     @field:OneToMany(mappedBy = "user", cascade = [CascadeType.REMOVE])
     val articles: List<Article> = mutableListOf()

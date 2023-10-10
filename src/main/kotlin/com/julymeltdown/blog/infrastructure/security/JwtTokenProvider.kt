@@ -1,18 +1,19 @@
 package com.julymeltdown.blog.infrastructure.security
 
 
+import com.julymeltdown.blog.application.dto.user.JwtTokenDto
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.io.DecodingException
 import io.jsonwebtoken.security.Keys
-import javax.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 import java.util.*
 import javax.crypto.SecretKey
+import javax.servlet.http.HttpServletRequest
 
 @Component
 open class JwtTokenProvider(
@@ -51,7 +52,6 @@ open class JwtTokenProvider(
                 "Bearer ",
                 ""
             )
-
             else -> throw DecodingException("")
         }
         return getClaimsFromToken(token)
