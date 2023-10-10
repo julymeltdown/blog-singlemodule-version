@@ -95,10 +95,10 @@ class ArticleService(
 
     @Transactional
     fun deleteArticle(requestDto: DeleteArticleDto) {
-        val requestUser = userService.getValidUser(requestDto.email, requestDto.password)
+        val user = userService.getValidUserByEmail(requestDto.email)
         val foundArticle = findValidArticleByArticleId(requestDto.articleId)
         foundArticle.let {
-            if (it.user.email != requestUser.email) {
+            if (it.user.email != user.email) {
                 throw NotArticleOwnerException()
             }
             articleRepository.delete(it)

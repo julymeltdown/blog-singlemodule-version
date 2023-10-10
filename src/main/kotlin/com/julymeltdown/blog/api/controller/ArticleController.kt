@@ -72,10 +72,11 @@ class ArticleController(
     @PatchMapping("/api/articles/{articleId}")
     fun updateArticle(
         @PathVariable articleId: Long,
-        @Valid @RequestBody articleRequest: ArticleRequest
+        @Valid @RequestBody articleRequest: ArticleRequest,
+        @AuthenticationPrincipal userDetails: UserPrincipal
     ): ResponseEntity<ArticleResponse> {
         val updateArticleRequestDto = ArticleRequestDto(
-            email = articleRequest.email,
+            email = userDetails.username,
             title = articleRequest.title,
             content = articleRequest.content
         )
@@ -93,10 +94,11 @@ class ArticleController(
     @DeleteMapping("/api/articles/{articleId}")
     fun deleteArticle(
         @PathVariable articleId: Long,
-        @Valid @RequestBody deleteArticleRequest: DeleteArticleRequest
+        @Valid @RequestBody deleteArticleRequest: DeleteArticleRequest,
+        @AuthenticationPrincipal userDetails: UserPrincipal
     ): ResponseEntity<Unit> {
         val deleteArticleDto = DeleteArticleDto(
-            email = deleteArticleRequest.email,
+            email = userDetails.username,
             password = deleteArticleRequest.password,
             articleId = articleId
         )

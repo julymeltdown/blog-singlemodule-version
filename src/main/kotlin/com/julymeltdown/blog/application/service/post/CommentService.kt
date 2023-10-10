@@ -23,12 +23,12 @@ class CommentService(
 ) {
     @Transactional
     fun createComment(requestDto: CommentRequestDto): CommentResponseDto {
-        val requestedUser = userService.getValidUser(requestDto.email, requestDto.password)
+        val user = userService.getValidUserByEmail(requestDto.email)
         val foundArticle = articleService.findValidArticleByArticleId(requestDto.articleId)
         val savedComment = commentRepository.save(
             Comment(
                 article = foundArticle,
-                user = requestedUser,
+                user = user,
                 content = requestDto.content
             )
         )
@@ -61,11 +61,9 @@ class CommentService(
 
     @Transactional
     fun updateComment(commentId: Long, requestDto: CommentRequestDto): CommentResponseDto {
-        val requestedUser = userService.getValidUser(requestDto.email, requestDto.password)
+        val requestedUser = userService.getValidUserByEmail(requestDto.email)
         val foundComment = findValidCommentByCommentId(commentId)
-        if (requestedUser.userId != foundComment.user.userId) {
-            throw NotCommentOwnerException()
-        }
+        if (requestedUser.userId != foundComment.user.userId) throw NotCommentOwnerException()
         foundComment.content = requestDto.content
         return CommentResponseDto(
             commentId = foundComment.commentId!!,
@@ -76,11 +74,9 @@ class CommentService(
 
     @Transactional
     fun deleteComment(requestDto: DeleteCommentDto) {
-        val requestedUser = userService.getValidUser(requestDto.email, requestDto.password)
+        val requestedUser = userService.getValidUserByEmail(requestDto.email)
         val foundComment = findValidCommentByCommentId(requestDto.commentId)
-        if (requestedUser.userId != foundComment.user.userId) {
-            throw NotCommentOwnerException()
-        }
+        if (requestedUser.userId != foundComment.user.userId) throw NotCommentOwnerException()
         commentRepository.delete(foundComment)
     }
 
