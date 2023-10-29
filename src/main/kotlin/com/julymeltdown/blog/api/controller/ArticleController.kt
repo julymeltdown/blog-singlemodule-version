@@ -3,12 +3,12 @@ package com.julymeltdown.blog.api.controller
 import com.julymeltdown.blog.api.request.ArticleRequest
 import com.julymeltdown.blog.api.request.DeleteArticleRequest
 import com.julymeltdown.blog.api.response.ArticleResponse
+import com.julymeltdown.blog.application.annotation.Auth
 import com.julymeltdown.blog.application.dto.post.ArticleRequestDto
 import com.julymeltdown.blog.application.dto.post.DeleteArticleDto
 import com.julymeltdown.blog.application.service.post.ArticleService
-import com.julymeltdown.blog.infrastructure.security.UserPrincipal
+import com.julymeltdown.blog.infrastructure.security.AuthInfo
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
@@ -51,10 +51,10 @@ class ArticleController(
     @PostMapping("/api/articles")
     fun createArticle(
         @Valid @RequestBody articleRequest: ArticleRequest,
-        @AuthenticationPrincipal userDetails: UserPrincipal
+        @Auth authInfo: AuthInfo
     ): ResponseEntity<ArticleResponse> {
         val articleRequestDto = ArticleRequestDto(
-            email = userDetails.username,
+            email = authInfo.email,
             title = articleRequest.title,
             content = articleRequest.content
         )
@@ -73,10 +73,10 @@ class ArticleController(
     fun updateArticle(
         @PathVariable articleId: Long,
         @Valid @RequestBody articleRequest: ArticleRequest,
-        @AuthenticationPrincipal userDetails: UserPrincipal
+        @Auth authInfo: AuthInfo
     ): ResponseEntity<ArticleResponse> {
         val updateArticleRequestDto = ArticleRequestDto(
-            email = userDetails.username,
+            email = authInfo.email,
             title = articleRequest.title,
             content = articleRequest.content
         )
@@ -95,10 +95,10 @@ class ArticleController(
     fun deleteArticle(
         @PathVariable articleId: Long,
         @Valid @RequestBody deleteArticleRequest: DeleteArticleRequest,
-        @AuthenticationPrincipal userDetails: UserPrincipal
+        @Auth authInfo: AuthInfo
     ): ResponseEntity<Unit> {
         val deleteArticleDto = DeleteArticleDto(
-            email = userDetails.username,
+            email = authInfo.email,
             password = deleteArticleRequest.password,
             articleId = articleId
         )
