@@ -3,12 +3,12 @@ package com.julymeltdown.blog.api.controller
 import com.julymeltdown.blog.api.request.CommentRequest
 import com.julymeltdown.blog.api.request.DeleteCommentRequest
 import com.julymeltdown.blog.api.response.CommentResponse
+import com.julymeltdown.blog.application.annotation.Auth
 import com.julymeltdown.blog.application.dto.post.CommentRequestDto
 import com.julymeltdown.blog.application.dto.post.DeleteCommentDto
 import com.julymeltdown.blog.application.service.post.CommentService
-import com.julymeltdown.blog.infrastructure.security.UserPrincipal
+import com.julymeltdown.blog.infrastructure.security.AuthInfo
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -44,11 +44,11 @@ class CommentController(
     fun createComment(
         @PathVariable articleId: Long,
         @Valid @RequestBody request: CommentRequest,
-        @AuthenticationPrincipal userDetails: UserPrincipal
+        @Auth authInfo: AuthInfo
     ): ResponseEntity<CommentResponse> {
         val commentRequestDto = CommentRequestDto(
             articleId = articleId,
-            email = userDetails.username,
+            email = authInfo.email,
             content = request.content,
         )
         val comment = commentService.createComment(commentRequestDto)
@@ -66,11 +66,11 @@ class CommentController(
         @PathVariable articleId: Long,
         @PathVariable commentId: Long,
         @Valid @RequestBody request: CommentRequest,
-        @AuthenticationPrincipal userDetails: UserPrincipal
+        @Auth authInfo: AuthInfo
     ): ResponseEntity<CommentResponse> {
         val commentRequestDto = CommentRequestDto(
             articleId = articleId,
-            email = userDetails.username,
+            email = authInfo.email,
             content = request.content,
         )
         val comment = commentService.updateComment(commentId, commentRequestDto)
@@ -88,11 +88,11 @@ class CommentController(
         @PathVariable articleId: Long,
         @PathVariable commentId: Long,
         @Valid @RequestBody request: DeleteCommentRequest,
-        @AuthenticationPrincipal userDetails: UserPrincipal
+        @Auth authInfo: AuthInfo
     ): ResponseEntity<CommentResponse> {
         val deleteCommentDto = DeleteCommentDto(
             articleId = articleId,
-            email = userDetails.username,
+            email = authInfo.email,
             commentId = commentId
         )
         commentService.deleteComment(deleteCommentDto)

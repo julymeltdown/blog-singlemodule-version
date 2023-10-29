@@ -3,6 +3,10 @@ package com.julymeltdown.blog.api.exception
 import com.julymeltdown.blog.api.response.ErrorResponse
 import com.julymeltdown.blog.domain.exceptions.*
 import com.julymeltdown.blog.domain.exceptions.code.ErrorCode
+import io.jsonwebtoken.ExpiredJwtException
+import io.jsonwebtoken.MalformedJwtException
+import io.jsonwebtoken.io.DecodingException
+import io.jsonwebtoken.security.SignatureException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -91,6 +95,74 @@ class UserExceptionHandler {
             .body(
                 ErrorResponse(
                     HttpStatus.BAD_REQUEST,
+                    errorCode,
+                    uri
+                )
+            )
+    }
+
+    @ExceptionHandler(SignatureException::class)
+    fun handleSignatureException(
+        exception: SignatureException,
+        request: WebRequest
+    ): ResponseEntity<ErrorResponse> {
+        val errorCode: String = ErrorCode.INVALID_TOKEN.message
+        val uri = (request as ServletWebRequest).request.requestURI
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            .body(
+                ErrorResponse(
+                    HttpStatus.UNAUTHORIZED,
+                    errorCode,
+                    uri
+                )
+            )
+    }
+
+    @ExceptionHandler(MalformedJwtException::class)
+    fun handleMalformedJwtException(
+        exception: MalformedJwtException,
+        request: WebRequest
+    ): ResponseEntity<ErrorResponse> {
+        val errorCode: String = ErrorCode.INVALID_TOKEN.message
+        val uri = (request as ServletWebRequest).request.requestURI
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            .body(
+                ErrorResponse(
+                    HttpStatus.UNAUTHORIZED,
+                    errorCode,
+                    uri
+                )
+            )
+    }
+
+    @ExceptionHandler(DecodingException::class)
+    fun handleDecodingException(
+        exception: DecodingException,
+        request: WebRequest
+    ): ResponseEntity<ErrorResponse> {
+        val errorCode: String = ErrorCode.INVALID_TOKEN.message
+        val uri = (request as ServletWebRequest).request.requestURI
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            .body(
+                ErrorResponse(
+                    HttpStatus.UNAUTHORIZED,
+                    errorCode,
+                    uri
+                )
+            )
+    }
+
+    @ExceptionHandler(ExpiredJwtException::class)
+    fun handleExpiredJwtException(
+        exception: ExpiredJwtException,
+        request: WebRequest
+    ): ResponseEntity<ErrorResponse> {
+        val errorCode: String = ErrorCode.INVALID_TOKEN.message
+        val uri = (request as ServletWebRequest).request.requestURI
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            .body(
+                ErrorResponse(
+                    HttpStatus.UNAUTHORIZED,
                     errorCode,
                     uri
                 )

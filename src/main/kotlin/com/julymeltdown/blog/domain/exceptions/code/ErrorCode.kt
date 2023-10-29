@@ -19,4 +19,5 @@ enum class ErrorCode(
     COMMENT_CONTENT_TOO_LONG("댓글 내용이 너무 깁니다"),
 
     RATE_LIMIT_EXCEEDED("요청 횟수가 너무 많습니다"),
+    INVALID_TOKEN("유효하지 않은 리프레시 토큰입니다"),
 }
