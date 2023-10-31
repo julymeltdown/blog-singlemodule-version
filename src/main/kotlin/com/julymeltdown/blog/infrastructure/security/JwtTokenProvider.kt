@@ -65,9 +65,7 @@ open class JwtTokenProvider(
     }
 
     fun getAuthentication(claims: Claims): Authentication {
-        val email = claims["email"] as String
-        val userPrincipal = UserPrincipal(email)
-        return UsernamePasswordAuthenticationToken(userPrincipal, "", listOf()) // 권한 설정
+        return UsernamePasswordAuthenticationToken(claims["email"], null, null)
     }
 
     fun getUserEmailFromToken(token: String): String {

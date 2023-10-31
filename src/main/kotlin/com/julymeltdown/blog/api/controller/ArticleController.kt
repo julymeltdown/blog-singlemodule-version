@@ -1,7 +1,6 @@
 package com.julymeltdown.blog.api.controller
 
 import com.julymeltdown.blog.api.request.ArticleRequest
-import com.julymeltdown.blog.api.request.DeleteArticleRequest
 import com.julymeltdown.blog.api.response.ArticleResponse
 import com.julymeltdown.blog.application.annotation.Auth
 import com.julymeltdown.blog.application.dto.post.ArticleRequestDto
@@ -94,12 +93,10 @@ class ArticleController(
     @DeleteMapping("/api/articles/{articleId}")
     fun deleteArticle(
         @PathVariable articleId: Long,
-        @Valid @RequestBody deleteArticleRequest: DeleteArticleRequest,
         @Auth authInfo: AuthInfo
     ): ResponseEntity<Unit> {
         val deleteArticleDto = DeleteArticleDto(
             email = authInfo.email,
-            password = deleteArticleRequest.password,
             articleId = articleId
         )
         articleService.deleteArticle(deleteArticleDto)
