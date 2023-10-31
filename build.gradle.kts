@@ -53,6 +53,9 @@ dependencies {
 	implementation("com.querydsl:querydsl-jpa:5.0.0")
 	kapt("com.querydsl:querydsl-apt:5.0.0:jpa")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+	//springdoc
+	implementation("org.springdoc:springdoc-openapi-ui:1.6.9")
 }
 
 tasks.withType<KotlinCompile> {
