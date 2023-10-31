@@ -1,7 +1,6 @@
 package com.julymeltdown.blog.api.controller
 
 import com.julymeltdown.blog.api.request.CommentRequest
-import com.julymeltdown.blog.api.request.DeleteCommentRequest
 import com.julymeltdown.blog.api.response.CommentResponse
 import com.julymeltdown.blog.application.annotation.Auth
 import com.julymeltdown.blog.application.dto.post.CommentRequestDto
@@ -87,7 +86,6 @@ class CommentController(
     fun deleteComment(
         @PathVariable articleId: Long,
         @PathVariable commentId: Long,
-        @Valid @RequestBody request: DeleteCommentRequest,
         @Auth authInfo: AuthInfo
     ): ResponseEntity<CommentResponse> {
         val deleteCommentDto = DeleteCommentDto(

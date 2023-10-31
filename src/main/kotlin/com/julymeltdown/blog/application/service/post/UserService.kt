@@ -57,18 +57,12 @@ class UserService(
 
     @Transactional
     fun deleteUser(requestDto: DeleteUserDto) {
-        val user = getValidUser(requestDto.email, requestDto.password)
+        val user = getValidUser(requestDto.email)
         userRepository.delete(user)
     }
 
-    fun getValidUser(email: String, password: String): User {
-        return userRepository.findByEmail(email)?.let {
-            if (bCryptPasswordEncoder.matches(password, it.password)) {
-                it
-            } else {
-                throw UserPasswordIncorrectException()
-            }
-        } ?: throw UserNotFoundException()
+    fun getValidUser(email: String): User {
+        return userRepository.findByEmail(email) ?: throw UserNotFoundException()
     }
     fun getValidUserByEmail(email: String): User {
         return userRepository.findByEmail(email) ?: throw UserNotFoundException()
