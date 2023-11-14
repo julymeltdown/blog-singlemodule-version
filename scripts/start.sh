@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 PROJECT_ROOT="/home/ubuntu/scripts"
 JAR_FILE="$PROJECT_ROOT/build/libs/blog -0.0.1-SNAPSHOT.jar"
 
