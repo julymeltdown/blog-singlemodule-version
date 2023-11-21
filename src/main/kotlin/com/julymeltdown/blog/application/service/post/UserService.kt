@@ -61,10 +61,23 @@ class UserService(
         userRepository.delete(user)
     }
 
-    //user Querydsl
     @Transactional
-    fun getAdminUser(): User {
-        return userRepository.findAdminUser() ?: throw UserNotFoundException()
+    fun getAdminUser(
+        username: String,
+        email: String,
+        createdAtStart: String,
+        createdAtEnd: String,
+        updatedAtStart: String,
+        updatedAtEnd: String,
+    ): User {
+        return userRepository.findAdminUser(
+            username = username,
+            email = email,
+            createdAtStart = createdAtStart,
+            createdAtEnd = createdAtEnd,
+            updatedAtStart = updatedAtStart,
+            updatedAtEnd = updatedAtEnd,
+        ) ?: throw UserNotFoundException()
     }
 
     fun getValidUser(email: String): User {

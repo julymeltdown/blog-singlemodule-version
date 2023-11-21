@@ -8,5 +8,5 @@ interface CustomUserRepository {
     fun findWithCommentsByUserId(userId: Long): User?
     fun existsByEmail(email: String): Boolean
 
-    fun findAdminUser(): User?
+    fun findAdminUser(username:String, email:String, createdAtStart: String, createdAtEnd:String, updatedAtStart:String,updatedAtEnd:String): User?
 }

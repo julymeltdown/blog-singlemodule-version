@@ -3,7 +3,7 @@ package com.julymeltdown.blog.api.controller
 import com.julymeltdown.blog.api.request.LoginRequest
 import com.julymeltdown.blog.api.request.RegisterRequest
 import com.julymeltdown.blog.api.response.LoginResponse
-import com.julymeltdown.blog.api.response.RegisterResponse
+import com.julymeltdown.blog.api.response.UserResponse
 import com.julymeltdown.blog.application.annotation.Auth
 import com.julymeltdown.blog.application.dto.user.DeleteUserDto
 import com.julymeltdown.blog.application.dto.user.LoginRequestDto
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
@@ -24,10 +25,24 @@ class UserController(
 ) {
     @GetMapping("/api/users/admin")
     fun getAdmin(
-    ): ResponseEntity<RegisterResponse>{
-        val user = userService.getAdminUser()
+        @RequestParam("username") username: String,
+        @RequestParam("email") email: String,
+        @RequestParam("createdAtStart") createAtStart: String,
+        @RequestParam("createdAtEnd") createdAtEnd: String,
+        @RequestParam("updatedAtStart") updatedAtStart: String,
+        @RequestParam("updatedAtEnd") updatedAtEnd: String,
+
+    ): ResponseEntity<UserResponse>{
+        val user = userService.getAdminUser(
+            username = username,
+            email = email,
+            createdAtStart = createAtStart,
+            createdAtEnd = createdAtEnd,
+            updatedAtStart = updatedAtStart,
+            updatedAtEnd = updatedAtEnd,
+        )
         return ResponseEntity.ok().body(
-            RegisterResponse(
+            UserResponse(
                 email = user.email,
                 username = user.username,
                 role = user.role.toString()
@@ -38,7 +53,7 @@ class UserController(
     @PostMapping("/api/users")
     fun signUp(
         @Valid @RequestBody request: RegisterRequest
-    ): ResponseEntity<RegisterResponse> {
+    ): ResponseEntity<UserResponse> {
         val savedUser = userService.registerUser(
             RegisterRequestDto(
                 email = request.email,
@@ -47,7 +62,7 @@ class UserController(
             )
         )
         return ResponseEntity.ok().body(
-            RegisterResponse(
+            UserResponse(
                 email = savedUser.email,
                 username = savedUser.username,
                 role = savedUser.role
@@ -76,7 +91,7 @@ class UserController(
     @DeleteMapping("/api/users")
     fun deleteUser(
         @Auth authInfo: AuthInfo,
-    ): ResponseEntity<RegisterResponse> {
+    ): ResponseEntity<UserResponse> {
         userService.deleteUser(
             DeleteUserDto(
                 email = authInfo.email,
