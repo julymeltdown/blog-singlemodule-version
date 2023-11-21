@@ -12,6 +12,7 @@ import com.julymeltdown.blog.application.service.post.UserService
 import com.julymeltdown.blog.infrastructure.security.AuthInfo
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
@@ -21,6 +22,19 @@ import javax.validation.Valid
 class UserController(
     private val userService: UserService
 ) {
+    @GetMapping("/api/users/admin")
+    fun getAdmin(
+    ): ResponseEntity<RegisterResponse>{
+        val user = userService.getAdminUser()
+        return ResponseEntity.ok().body(
+            RegisterResponse(
+                email = user.email,
+                username = user.username,
+                role = user.role.toString()
+            )
+        )
+    }
+
     @PostMapping("/api/users")
     fun signUp(
         @Valid @RequestBody request: RegisterRequest

@@ -7,4 +7,6 @@ interface CustomUserRepository {
     fun findWithArticlesByUserId(userId: Long): User?
     fun findWithCommentsByUserId(userId: Long): User?
     fun existsByEmail(email: String): Boolean
+
+    fun findAdminUser(): User?
 }

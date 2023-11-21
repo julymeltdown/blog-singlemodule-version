@@ -39,6 +39,12 @@ class CustomUserRepositoryImpl(
     override fun existsByEmail(email: String): Boolean {
         return queryFactory.selectFrom(qUser)
             .where(qUser.email.eq(email))
-            .fetchCount() > 0
+            .fetchOne() != null
+    }
+
+    override fun findAdminUser(): User? {
+        return queryFactory.selectFrom(qUser)
+            .where(qUser.email.eq("ADMIN"))
+            .fetchOne()
     }
 }
